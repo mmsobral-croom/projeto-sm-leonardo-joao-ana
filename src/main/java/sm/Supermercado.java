@@ -35,9 +35,12 @@ public class Supermercado {
         ListaSequencial<Produto> r = new ListaSequencial<>();
         try {
             HttpResponse<String> response = cliente.send(req, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() == 200) {
+            IO.println("responseStatusCode " + response.statusCode());
+
+            if (response.statusCode() == 200 || response.statusCode() == 206) {
                 var headers = response.headers().map();
                 boolean isJson = headers.get("content-type").stream().anyMatch(x -> x.startsWith("application/json"));
+
                 if (isJson) {
                     JSONArray jo = new JSONArray(response.body());
                     for (var o: jo) {

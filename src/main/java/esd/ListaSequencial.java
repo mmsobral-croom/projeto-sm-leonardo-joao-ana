@@ -80,6 +80,18 @@ public class ListaSequencial<T> implements Iterable<T>{
         area[len++] = elemento;
     }
 
+    public void adiciona_unico(T elemento) {
+        boolean encontrou = false;
+
+        for (int pos = 0; pos < this.len; pos++) {
+            encontrou = this.area[pos] == elemento;
+
+            if (encontrou) break;
+        }
+
+        if (!encontrou) this.adiciona(elemento);
+    }
+
     public void insere_ordenado(Comparable valor) {
         // insere o valor na lista, preservando seu ordenamento
         if(len >= area.length) {
