@@ -1,5 +1,7 @@
 package esd;
 
+import sm.Produto;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Random;
@@ -80,16 +82,17 @@ public class ListaSequencial<T> implements Iterable<T>{
         area[len++] = elemento;
     }
 
-    public void adiciona_unico(T elemento) {
+    public void adiciona_produto_unico(Produto elemento) {
         boolean encontrou = false;
 
         for (int pos = 0; pos < this.len; pos++) {
-            encontrou = this.area[pos] == elemento;
+            Produto p = (Produto) this.area[pos];
+            encontrou = p.getEan() == elemento.getEan();
 
             if (encontrou) break;
         }
 
-        if (!encontrou) this.adiciona(elemento);
+        if (!encontrou) this.adiciona((T) elemento);
     }
 
     public void insere_ordenado(Comparable valor) {

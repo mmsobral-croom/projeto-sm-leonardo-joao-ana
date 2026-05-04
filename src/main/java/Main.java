@@ -1,43 +1,60 @@
 import esd.ListaSequencial;
-import sm.Bistek;
-import sm.Fort;
-import sm.Giassi;
-import sm.Produto;
+import sm.*;
+
+import java.util.Objects;
 
 public class Main {
     static void main() {
-
-        // cria um acessador para o Giassi
         Giassi sm = new Giassi();
         Bistek bistek = new Bistek();
         Fort fort = new Fort();
 
-        String produtoNome = IO.readln("Digite o nome do produto que você quer buscar: ");
+        ListaSequencial<Produto> produtos = new ListaSequencial<>();
+        ListaSequencial<Produto> carrinho = new ListaSequencial<>();
 
-        IO.println("Buscando produtos");
-        ListaSequencial<String> produtosEan = new ListaSequencial<>();
+        String produtoNome = "";
 
-        // procura todos produtos cujo nome contenha "tapioca"
-        ListaSequencial<Produto> produtosGiassi = sm.busca(produtoNome);
-        ListaSequencial<Produto> produtosBistek = bistek.busca(produtoNome);
-        ListaSequencial<Produto> produtosFort = fort.busca(produtoNome);
+        while (!Objects.equals(produtoNome, "sair")) {
+            produtoNome = IO.readln("Digite o nome do produto que você quer buscar, 'listar' para listar os produtos no carrinho ou 'sair' para sair : ");
 
-        // Mostra cada um dos produtos encontrados
-        for (int pos=0; pos < produtosGiassi.comprimento(); pos++) {
-            produtosEan.adiciona_unico(produtosGiassi.obtem(pos).getEan());
-        }
+            if (Objects.equals(produtoNome, "listar")) {
+                for (Produto p: carrinho) {
+                    IO.println(p.getNome());
+                }
 
-        for (int pos=0; pos < produtosBistek.comprimento(); pos++) {
-            produtosEan.adiciona_unico(produtosBistek.obtem(pos).getEan());
-        }
+                continue;
+            }
 
-        for (int pos=0; pos < produtosFort.comprimento(); pos++) {
-            produtosEan.adiciona_unico(produtosFort.obtem(pos).getEan());
-        }
+            IO.println("Buscando produtos");
 
+            // procura todos produtos cujo nome contenha "tapioca"
+            Supermercado.Resultado produtosGiassi = sm.busca(produtoNome);
+            Supermercado.Resultado produtosBistek = bistek.busca(produtoNome);
+            Supermercado.Resultado produtosFort = fort.busca(produtoNome);
 
-        for (int pos=0; pos < produtosEan.comprimento(); pos++) {
-            IO.println(produtosEan.obtem(pos));
+            for (Produto p: produtosGiassi) {
+                produtos.adiciona_produto_unico(p);
+            }
+
+            for (Produto p: produtosBistek) {
+                produtos.adiciona_produto_unico(p);
+            }
+
+            for (Produto p: produtosFort) {
+                produtos.adiciona_produto_unico(p);
+            }
+
+            int id = 1;
+
+            for (Produto p : produtos) {
+                IO.println(id + " - " + p.getNome());
+                id++;
+            }
+
+            int idProdutoSelecionado = Integer.parseInt(IO.readln("Digite o id do produto a adicionar no carrinho: "));
+            carrinho.adiciona(produtos.obtem(idProdutoSelecionado - 1));
+
+            produtos.limpa();
         }
     }
 }
