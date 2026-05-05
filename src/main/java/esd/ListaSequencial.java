@@ -410,6 +410,46 @@ public class ListaSequencial<T> implements Iterable<T>{
         }
     }
 
+    public <T> ListaSequencial<T> interseccao(ListaSequencial<T> l1) {
+        ListaSequencial<T> resultado = new ListaSequencial<>();
+
+        if (l1.esta_vazia() || this.esta_vazia()) {
+            return resultado;
+        }
+        l1.ordena();
+        this.ordena();
+
+        int i = 0;
+        int j = 0;
+
+        // percorrer as listas simultaneamente O(n)
+        while (i < l1.comprimento() && j < this.comprimento()) {
+            T elem1 = l1.obtem(i);
+            T elem2 = (T) this.obtem(j);
+
+            Comparable v1 = (Comparable) elem1;
+            Comparable v2 = (Comparable) elem2;
+
+            int comparacao = v1.compareTo(v2);
+
+            if (comparacao == 0) {
+                if (resultado.esta_vazia() || !resultado.ultimo().equals(elem1)) {
+                    resultado.adiciona(elem1);
+                }
+                i++;
+                j++;
+            } else if (comparacao < 0) {
+                // elemento de l1 é menor, avança em l1 para tentar achar um maior
+                i++;
+            } else {
+                // elemento de l2 é menor, avança em l2
+                j++;
+            }
+        }
+
+        return resultado;
+    }
+
 
 
 }
