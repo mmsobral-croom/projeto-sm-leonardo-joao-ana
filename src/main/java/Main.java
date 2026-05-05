@@ -34,17 +34,20 @@ public class Main {
             Supermercado.Resultado produtosBistek = bistek.busca(produtoNome);
             Supermercado.Resultado produtosFort = fort.busca(produtoNome);
 
+            ListaSequencial<Produto> produtosGiassi2 = new ListaSequencial<>();
             for (Produto p: produtosGiassi) {
-                produtos.adiciona_produto_unico(p);
+                produtosGiassi2.adiciona_produto_unico(p);
             }
-
+            ListaSequencial<Produto> produtosBistek2 = new ListaSequencial<>();
             for (Produto p: produtosBistek) {
-                produtos.adiciona_produto_unico(p);
+                produtosBistek2.adiciona_produto_unico(p);
+            }
+            ListaSequencial<Produto> produtosFort2 = new ListaSequencial<>();
+            for (Produto p: produtosFort) {
+                produtosFort2.adiciona_produto_unico(p);
             }
 
-            for (Produto p: produtosFort) {
-                produtos.adiciona_produto_unico(p);
-            }
+            produtos = produtosGiassi2.interseccao(produtosBistek2).interseccao(produtosFort2);
 
             int id = 1;
 
