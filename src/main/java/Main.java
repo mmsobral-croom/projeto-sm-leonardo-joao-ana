@@ -80,6 +80,11 @@ public class Main {
                 }
             }
 
+            if (produtos.esta_vazia()) {
+                IO.println("Nenhum produto encontrado");
+                continue;
+            }
+
             int id = 1;
 
             for (Produto p : produtos) {
