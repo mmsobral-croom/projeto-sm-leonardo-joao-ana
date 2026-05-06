@@ -5,6 +5,8 @@ import java.util.Objects;
 
 import lombok.*;
 
+import static esd.ListaSequencial.interseccao;
+
 public class Main {
     static void main() {
         Giassi sm = new Giassi();
@@ -34,20 +36,35 @@ public class Main {
             Supermercado.Resultado produtosBistek = bistek.busca(produtoNome);
             Supermercado.Resultado produtosFort = fort.busca(produtoNome);
 
-            ListaSequencial<Produto> produtosGiassi2 = new ListaSequencial<>();
+            ListaSequencial<String> produtosGiassi2 = new ListaSequencial<>();
             for (Produto p: produtosGiassi) {
-                produtosGiassi2.adiciona_produto_unico(p);
+                produtosGiassi2.adiciona(p.getEan());
             }
-            ListaSequencial<Produto> produtosBistek2 = new ListaSequencial<>();
+            ListaSequencial<String> produtosBistek2 = new ListaSequencial<>();
             for (Produto p: produtosBistek) {
-                produtosBistek2.adiciona_produto_unico(p);
+                produtosBistek2.adiciona(p.getEan());
             }
-            ListaSequencial<Produto> produtosFort2 = new ListaSequencial<>();
+            ListaSequencial<String> produtosFort2 = new ListaSequencial<>();
             for (Produto p: produtosFort) {
-                produtosFort2.adiciona_produto_unico(p);
+                produtosFort2.adiciona(p.getEan());
             }
 
-            produtos = produtosGiassi2.interseccao(produtosBistek2).interseccao(produtosFort2);
+            ListaSequencial<String> produtosEan = new ListaSequencial<>();
+
+            produtosEan = produtosGiassi2.interseccao(produtosBistek2.interseccao(produtosFort2));
+
+            ListaSequencial<Produto> produtosGiassi3 = new ListaSequencial<>();
+            for (Produto p: produtosGiassi) {
+                produtosGiassi3.adiciona(p);
+            }
+
+            for(String ean : produtosEan){
+                for(Produto produto: produtosGiassi3){
+                    if(Objects.equals(produto.getEan(), ean)){
+                        produtos.adiciona(produto);
+                    }
+                }
+            }
 
             int id = 1;
 

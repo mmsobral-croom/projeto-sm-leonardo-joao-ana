@@ -259,6 +259,8 @@ public class ListaSequencial<T> implements Iterable<T>{
         return -1;
     }
 
+
+
     public T obtem(int indice) {
         // retorna o valor armazenado na posição indica pelo parâmetro "indice"
         // disparar uma exceção IndexOutOfBoundsException caso posição seja inválida
@@ -429,6 +431,46 @@ public class ListaSequencial<T> implements Iterable<T>{
 
             Comparable v1 = (Comparable) elem1;
             Comparable v2 = (Comparable) elem2;
+
+            int comparacao = v1.compareTo(v2);
+
+            if (comparacao == 0) {
+                if (resultado.esta_vazia() || !resultado.ultimo().equals(elem1)) {
+                    resultado.adiciona(elem1);
+                }
+                i++;
+                j++;
+            } else if (comparacao < 0) {
+                // elemento de l1 é menor, avança em l1 para tentar achar um maior
+                i++;
+            } else {
+                // elemento de l2 é menor, avança em l2
+                j++;
+            }
+        }
+
+        return resultado;
+    }
+
+    public static ListaSequencial<Produto> interseccao(ListaSequencial<Produto> l1, ListaSequencial<Produto> l2) {
+        ListaSequencial<Produto> resultado = new ListaSequencial<>();
+
+        if (l1.esta_vazia() || l2.esta_vazia()) {
+            return resultado;
+        }
+        l1.ordena();
+        l2.ordena();
+
+        int i = 0;
+        int j = 0;
+
+        // percorrer as listas simultaneamente O(n)
+        while (i < l1.comprimento() && j < l2.comprimento()) {
+            Produto elem1 = (Produto) l1.obtem(i);
+            Produto elem2 =  l2.obtem(j);
+
+            Comparable v1 = (Comparable) elem1.getEan();
+            Comparable v2 = (Comparable) elem2.getEan();
 
             int comparacao = v1.compareTo(v2);
 
