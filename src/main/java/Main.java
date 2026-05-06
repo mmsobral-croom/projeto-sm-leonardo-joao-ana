@@ -29,6 +29,22 @@ public class Main {
                 continue;
             }
 
+            if (Objects.equals(produtoNome, "preco")) {
+                float precoBistek = 0;
+                float precoGiassi = 0;
+                float precoFort = 0;
+
+
+                for (Produto p: carrinho) {
+                    precoGiassi += p.getPreco();
+                }
+                IO.println("Preço do Bistek: " + precoBistek);
+                IO.println("Preço do Giassi: " + precoGiassi);
+                IO.println("Preço do Fort: " + precoFort);
+
+                continue;
+            }
+
             IO.println("Buscando produtos");
 
             // procura todos produtos cujo nome contenha "tapioca"
@@ -49,9 +65,7 @@ public class Main {
                 produtosFort2.adiciona(p.getEan());
             }
 
-            ListaSequencial<String> produtosEan = new ListaSequencial<>();
-
-            produtosEan = produtosGiassi2.interseccao(produtosBistek2.interseccao(produtosFort2));
+            ListaSequencial<String> produtosEan =  produtosGiassi2.interseccao(produtosBistek2.interseccao(produtosFort2));
 
             ListaSequencial<Produto> produtosGiassi3 = new ListaSequencial<>();
             for (Produto p: produtosGiassi) {
