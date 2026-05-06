@@ -1,6 +1,8 @@
 import esd.ListaSequencial;
 import sm.*;
 import sm.Produto;
+
+import java.util.HashMap;
 import java.util.Objects;
 
 import lombok.*;
@@ -15,6 +17,7 @@ public class Main {
 
         ListaSequencial<Produto> produtos = new ListaSequencial<>();
         ListaSequencial<Produto> carrinho = new ListaSequencial<>();
+        HashMap<String, Produto> mapProdutos = new HashMap<>();
 
         String produtoNome = "";
 
@@ -55,14 +58,17 @@ public class Main {
             ListaSequencial<String> produtosGiassi2 = new ListaSequencial<>();
             for (Produto p: produtosGiassi) {
                 produtosGiassi2.adiciona(p.getEan());
+                mapProdutos.put(p.getEan(), p);
             }
             ListaSequencial<String> produtosBistek2 = new ListaSequencial<>();
             for (Produto p: produtosBistek) {
                 produtosBistek2.adiciona(p.getEan());
+                mapProdutos.put(p.getEan(), p);
             }
             ListaSequencial<String> produtosFort2 = new ListaSequencial<>();
             for (Produto p: produtosFort) {
                 produtosFort2.adiciona(p.getEan());
+                mapProdutos.put(p.getEan(), p);
             }
 
             ListaSequencial<String> produtosEan =  produtosGiassi2.interseccao(produtosBistek2.interseccao(produtosFort2));
@@ -73,11 +79,7 @@ public class Main {
             }
 
             for(String ean : produtosEan){
-                for(Produto produto: produtosGiassi3){
-                    if(Objects.equals(produto.getEan(), ean)){
-                        produtos.adiciona(produto);
-                    }
-                }
+                produtos.adiciona(mapProdutos.get(ean));
             }
 
             if (produtos.esta_vazia()) {
