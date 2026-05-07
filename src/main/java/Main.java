@@ -51,32 +51,27 @@ public class Main {
             IO.println("Buscando produtos");
 
             // procura todos produtos cujo nome contenha "tapioca"
-            Supermercado.Resultado produtosGiassi = sm.busca(produtoNome);
-            Supermercado.Resultado produtosBistek = bistek.busca(produtoNome);
-            Supermercado.Resultado produtosFort = fort.busca(produtoNome);
+            Supermercado.Resultado buscaGiassi = sm.busca(produtoNome);
+            Supermercado.Resultado buscaBistek = bistek.busca(produtoNome);
+            Supermercado.Resultado buscaFort = fort.busca(produtoNome);
 
-            ListaSequencial<String> produtosGiassi2 = new ListaSequencial<>();
-            for (Produto p: produtosGiassi) {
-                produtosGiassi2.adiciona(p.getEan());
+            ListaSequencial<String> produtosGiassi = new ListaSequencial<>();
+            for (Produto p: buscaGiassi) {
+                produtosGiassi.adiciona(p.getEan());
                 mapProdutos.put(p.getEan(), p);
             }
-            ListaSequencial<String> produtosBistek2 = new ListaSequencial<>();
-            for (Produto p: produtosBistek) {
-                produtosBistek2.adiciona(p.getEan());
+            ListaSequencial<String> produtosBistek = new ListaSequencial<>();
+            for (Produto p: buscaBistek) {
+                produtosBistek.adiciona(p.getEan());
                 mapProdutos.put(p.getEan(), p);
             }
-            ListaSequencial<String> produtosFort2 = new ListaSequencial<>();
-            for (Produto p: produtosFort) {
-                produtosFort2.adiciona(p.getEan());
+            ListaSequencial<String> produtosFort = new ListaSequencial<>();
+            for (Produto p: buscaFort) {
+                produtosFort.adiciona(p.getEan());
                 mapProdutos.put(p.getEan(), p);
             }
 
-            ListaSequencial<String> produtosEan =  produtosGiassi2.interseccao(produtosBistek2.interseccao(produtosFort2));
-
-            ListaSequencial<Produto> produtosGiassi3 = new ListaSequencial<>();
-            for (Produto p: produtosGiassi) {
-                produtosGiassi3.adiciona(p);
-            }
+            ListaSequencial<String> produtosEan =  produtosGiassi.interseccao(produtosBistek.interseccao(produtosFort));
 
             for(String ean : produtosEan){
                 produtos.adiciona(mapProdutos.get(ean));
