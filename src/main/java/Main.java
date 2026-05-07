@@ -16,14 +16,9 @@ public class Main {
         Fort fort = new Fort();
 
         ListaSequencial<Produto> produtos = new ListaSequencial<>(); //esse é do giassi
-        ListaSequencial<Produto> produtosBistekParaCarrinho = new ListaSequencial<>();
-        ListaSequencial<Produto> produtosFortParaCarrinho = new ListaSequencial<>();
 
         ListaSequencial<Produto> carrinho = new ListaSequencial<>(); //esse é do giassi
-        ListaSequencial<Produto> carrinhoBistek = new ListaSequencial<>();
-        ListaSequencial<Produto> carrinhoFort = new ListaSequencial<>();
 
-        HashMap<String, Produto> mapProdutosGiassi = new HashMap<>();
         HashMap<String, Produto> mapProdutosBistek = new HashMap<>();
         HashMap<String, Produto> mapProdutosFort = new HashMap<>();
         HashMap<String, Produto> mapProdutos = new HashMap<>(); //esse é do giassi
@@ -49,8 +44,8 @@ public class Main {
 
                 for(int i = 0; i < carrinho.comprimento(); i++){
                     precoGiassi += carrinho.obtem(i).getPreco();
-                    precoBistek += carrinhoBistek.obtem(i).getPreco();
-                    precoFort += carrinhoFort.obtem(i).getPreco();
+                    precoBistek += mapProdutosBistek.get(carrinho.obtem(i).getEan()).getPreco();
+                    precoFort += mapProdutosFort.get(carrinho.obtem(i).getEan()).getPreco();
                 }
 
                 IO.println("Preço do Bistek: " + precoBistek);
@@ -87,8 +82,6 @@ public class Main {
 
             for(String ean : produtosEan){
                 produtos.adiciona(mapProdutos.get(ean));
-                produtosBistekParaCarrinho.adiciona(mapProdutosBistek.get(ean));
-                produtosFortParaCarrinho.adiciona(mapProdutosFort.get(ean));
             }
 
             if (produtos.esta_vazia()) {
@@ -105,9 +98,6 @@ public class Main {
 
             int idProdutoSelecionado = Integer.parseInt(IO.readln("Digite o id do produto a adicionar no carrinho: "));
             carrinho.adiciona(produtos.obtem(idProdutoSelecionado - 1));
-            carrinhoBistek.adiciona(produtosBistekParaCarrinho.obtem(idProdutoSelecionado - 1));
-            carrinhoFort.adiciona(produtosFortParaCarrinho.obtem(idProdutoSelecionado-1));
-
 
             produtos.limpa();
         }
