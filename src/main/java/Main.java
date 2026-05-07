@@ -15,9 +15,18 @@ public class Main {
         Bistek bistek = new Bistek();
         Fort fort = new Fort();
 
-        ListaSequencial<Produto> produtos = new ListaSequencial<>();
-        ListaSequencial<Produto> carrinho = new ListaSequencial<>();
-        HashMap<String, Produto> mapProdutos = new HashMap<>();
+        ListaSequencial<Produto> produtos = new ListaSequencial<>(); //esse é do giassi
+        ListaSequencial<Produto> produtosBistekParaCarrinho = new ListaSequencial<>();
+        ListaSequencial<Produto> produtosFortParaCarrinho = new ListaSequencial<>();
+
+        ListaSequencial<Produto> carrinho = new ListaSequencial<>(); //esse é do giassi
+        ListaSequencial<Produto> carrinhoBistek = new ListaSequencial<>();
+        ListaSequencial<Produto> carrinhoFort = new ListaSequencial<>();
+
+        HashMap<String, Produto> mapProdutosGiassi = new HashMap<>();
+        HashMap<String, Produto> mapProdutosBistek = new HashMap<>();
+        HashMap<String, Produto> mapProdutosFort = new HashMap<>();
+        HashMap<String, Produto> mapProdutos = new HashMap<>(); //esse é do giassi
 
         String produtoNome = "";
 
@@ -38,9 +47,12 @@ public class Main {
                 float precoFort = 0;
 
 
-                for (Produto p: carrinho) {
-                    precoGiassi += p.getPreco();
+                for(int i = 0; i < carrinho.comprimento(); i++){
+                    precoGiassi += carrinho.obtem(i).getPreco();
+                    precoBistek += carrinhoBistek.obtem(i).getPreco();
+                    precoFort += carrinhoFort.obtem(i).getPreco();
                 }
+
                 IO.println("Preço do Bistek: " + precoBistek);
                 IO.println("Preço do Giassi: " + precoGiassi);
                 IO.println("Preço do Fort: " + precoFort);
@@ -63,18 +75,20 @@ public class Main {
             ListaSequencial<String> produtosBistek = new ListaSequencial<>();
             for (Produto p: buscaBistek) {
                 produtosBistek.adiciona(p.getEan());
-                mapProdutos.put(p.getEan(), p);
+                mapProdutosBistek.put(p.getEan(), p);
             }
             ListaSequencial<String> produtosFort = new ListaSequencial<>();
             for (Produto p: buscaFort) {
                 produtosFort.adiciona(p.getEan());
-                mapProdutos.put(p.getEan(), p);
+                mapProdutosFort.put(p.getEan(), p);
             }
 
             ListaSequencial<String> produtosEan =  produtosGiassi.interseccao(produtosBistek.interseccao(produtosFort));
 
             for(String ean : produtosEan){
                 produtos.adiciona(mapProdutos.get(ean));
+                produtosBistekParaCarrinho.adiciona(mapProdutosBistek.get(ean));
+                produtosFortParaCarrinho.adiciona(mapProdutosFort.get(ean));
             }
 
             if (produtos.esta_vazia()) {
@@ -91,6 +105,9 @@ public class Main {
 
             int idProdutoSelecionado = Integer.parseInt(IO.readln("Digite o id do produto a adicionar no carrinho: "));
             carrinho.adiciona(produtos.obtem(idProdutoSelecionado - 1));
+            carrinhoBistek.adiciona(produtosBistekParaCarrinho.obtem(idProdutoSelecionado - 1));
+            carrinhoFort.adiciona(produtosFortParaCarrinho.obtem(idProdutoSelecionado-1));
+
 
             produtos.limpa();
         }
