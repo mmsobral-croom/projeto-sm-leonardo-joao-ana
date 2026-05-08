@@ -1,4 +1,5 @@
 import esd.ListaSequencial;
+import esd.TabHash;
 import sm.*;
 import sm.Produto;
 
@@ -19,9 +20,9 @@ public class Main {
 
         ListaSequencial<Produto> carrinho = new ListaSequencial<>(); //esse é do giassi
 
-        HashMap<String, Produto> mapProdutosBistek = new HashMap<>();
-        HashMap<String, Produto> mapProdutosFort = new HashMap<>();
-        HashMap<String, Produto> mapProdutos = new HashMap<>(); //esse é do giassi
+        TabHash<String, Produto> mapProdutosBistek = new TabHash<>();
+        TabHash<String, Produto> mapProdutosFort = new TabHash<>();
+        TabHash<String, Produto> mapProdutos = new TabHash<>(); //esse é do giassi
 
         String produtoNome = "";
 
@@ -44,8 +45,8 @@ public class Main {
 
                 for(int i = 0; i < carrinho.comprimento(); i++){
                     precoGiassi += carrinho.obtem(i).getPreco();
-                    precoBistek += mapProdutosBistek.get(carrinho.obtem(i).getEan()).getPreco();
-                    precoFort += mapProdutosFort.get(carrinho.obtem(i).getEan()).getPreco();
+                    precoBistek += mapProdutosBistek.obtem(carrinho.obtem(i).getEan()).getPreco();
+                    precoFort += mapProdutosFort.obtem(carrinho.obtem(i).getEan()).getPreco();
                 }
 
                 IO.println("Preço do Bistek: " + precoBistek);
@@ -65,23 +66,23 @@ public class Main {
             ListaSequencial<String> produtosGiassi = new ListaSequencial<>();
             for (Produto p: buscaGiassi) {
                 produtosGiassi.adiciona(p.getEan());
-                mapProdutos.put(p.getEan(), p);
+                mapProdutos.adiciona(p.getEan(), p);
             }
             ListaSequencial<String> produtosBistek = new ListaSequencial<>();
             for (Produto p: buscaBistek) {
                 produtosBistek.adiciona(p.getEan());
-                mapProdutosBistek.put(p.getEan(), p);
+                mapProdutosBistek.adiciona(p.getEan(), p);
             }
             ListaSequencial<String> produtosFort = new ListaSequencial<>();
             for (Produto p: buscaFort) {
                 produtosFort.adiciona(p.getEan());
-                mapProdutosFort.put(p.getEan(), p);
+                mapProdutosFort.adiciona(p.getEan(), p);
             }
 
             ListaSequencial<String> produtosEan =  produtosGiassi.interseccao(produtosBistek.interseccao(produtosFort));
 
             for(String ean : produtosEan){
-                produtos.adiciona(mapProdutos.get(ean));
+                produtos.adiciona(mapProdutos.obtem(ean));
             }
 
             if (produtos.esta_vazia()) {

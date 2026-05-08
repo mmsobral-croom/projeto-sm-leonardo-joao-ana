@@ -30,7 +30,7 @@ public class TabHash <K, V> {
 
     Par[] tab;
     int len = 0; // quantos pares estao armazenados
-    final int defcap = 31;
+    final int defcap = 400;
 
     public TabHash() {
         // dimensiona a tabela
