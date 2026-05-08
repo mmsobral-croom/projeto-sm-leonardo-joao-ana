@@ -26,7 +26,7 @@ public class Main {
         String produtoNome = "";
 
         while (!Objects.equals(produtoNome, "sair")) {
-            produtoNome = IO.readln("Digite o nome do produto que você quer buscar, 'listar' para listar os produtos no carrinho ou 'sair' para sair : ");
+            produtoNome = IO.readln("Digite o nome do produto que você quer buscar, 'listar' para listar os produtos no carrinho, 'preco' para calcular o total ou 'sair' para sair : ");
 
             if (Objects.equals(produtoNome, "listar")) {
                 for (Produto p: carrinho) {
