@@ -4,11 +4,7 @@ Este manual descreve como utilizar o programa de comparação de preços de supe
 
 ## 1. Iniciando o Programa
 
-Após compilar o projeto, execute o programa a partir da linha de comando:
-
-```bash
-java -cp .:json-20231013.jar:lombok-1.18.30.jar:src/main/java Main
-```
+Após compilar o projeto, execute o programa.
 
 O programa iniciará e solicitará a entrada do usuário.
 
