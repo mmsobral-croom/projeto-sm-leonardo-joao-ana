@@ -1,7 +1,7 @@
 package esd;
 
 
-import java.security.KeyException;
+import java.lang.reflect.Array;
 
 public class TabHash <K, V> {
     public class Par {
@@ -40,49 +40,91 @@ public class TabHash <K, V> {
 
     @SuppressWarnings("unchecked")
     Par[] inicia_tabela(int linhas) {
-        Par[] nova = (Par[])new Object[linhas];
+        Par[] nova = (Par[]) Array.newInstance(Par.class, linhas);
 
         // inicia a lista com essa quantidade de linhas
 
         return nova;
     }
 
-    public void adiciona(K chave, V valor) throws IndexOutOfBoundsException {
-        //calcular o hash de chave e com ele o numero da linha
-        int linha = Math.abs(chave.hashCode()) % tab.length;
+    public void adiciona(K chave, V valor) {
+        int hash = Math.abs(chave.hashCode()) % tab.length;
+        int originalHash = hash;
 
-        //verifica se existe um par contendo esta chave
-        //se exister, ele esta na linha da tabela correspondente as hash
-
-        Par p = tab[linha];
-        if (p != null) {
-            if (chave.equals(p.chave)) {
-                p.valor = valor;
-            }else{
-                throw new IndexOutOfBoundsException("Colisão");
+        while (tab[hash] != null) {
+            if (tab[hash].chave.equals(chave)) {
+                tab[hash].valor = valor; // Atualiza o valor se a chave já existe
+                return;
             }
-        } else {
-            tab[linha] = new Par(chave, valor);
+            hash = (hash + 1) % tab.length; // Sondagem linear
+            if (hash == originalHash) {
+                // Tabela cheia ou loop infinito, precisa redimensionar
+                // Por simplicidade, vamos lançar uma exceção por enquanto
+                throw new IllegalStateException("Tabela hash cheia");
+            }
         }
+        tab[hash] = new Par(chave, valor);
+        len++;
     }
 
     public V obtem(K chave) {
-        int linha = Math.abs(chave.hashCode()) % tab.length;
+        int hash = Math.abs(chave.hashCode()) % tab.length;
+        int originalHash = hash;
 
-        Par p = tab[linha];
-        if (p.chave == chave) {
-            return p.valor;
-        } else {
-            //talvez se nao encontrar desse jeito, posso tentar percorer um por um
-            throw new IndexOutOfBoundsException("chave inexistente");
+        while (tab[hash] != null) {
+            if (tab[hash].chave.equals(chave)) {
+                return tab[hash].valor;
+            }
+            hash = (hash + 1) % tab.length;
+            if (hash == originalHash) {
+                break; // Percorreu a tabela inteira e não encontrou
+            }
         }
+        throw new IndexOutOfBoundsException("chave inexistente");
     }
 
     public void remove(K chave) {
+        int hash = Math.abs(chave.hashCode()) % tab.length;
+        int originalHash = hash;
+
+        while (tab[hash] != null) {
+            if (tab[hash].chave.equals(chave)) {
+                tab[hash] = null; // Marca como removido
+                len--;
+
+                // Reorganizar a tabela para evitar problemas com sondagem linear
+                // Re-adiciona os elementos subsequentes que foram deslocados
+                int currentHash = (hash + 1) % tab.length;
+                while (tab[currentHash] != null && Math.abs(tab[currentHash].chave.hashCode()) % tab.length != currentHash) {
+                    Par tempPar = tab[currentHash];
+                    tab[currentHash] = null;
+                    len--;
+                    adiciona(tempPar.chave, tempPar.valor);
+                    currentHash = (currentHash + 1) % tab.length;
+                }
+                return;
+            }
+            hash = (hash + 1) % tab.length;
+            if (hash == originalHash) {
+                break; // Percorreu a tabela inteira e não encontrou
+            }
+        }
         throw new IndexOutOfBoundsException("chave inexistente");
     }
 
     public boolean contem(K chave) {
+        int hash = Math.abs(chave.hashCode()) % tab.length;
+        int originalHash = hash;
+
+        while (tab[hash] != null) {
+            if (tab[hash].chave.equals(chave)) {
+                return true;
+            }
+            hash = (hash + 1) % tab.length;
+            if (hash == originalHash) {
+                break; // Percorreu a tabela inteira e não encontrou
+            }
+        }
         return false;
     }
 
@@ -91,24 +133,40 @@ public class TabHash <K, V> {
     }
 
     public V obtem_ou_default(K chave, V defval) {
-        return defval;
+        try {
+            return obtem(chave);
+        } catch (IndexOutOfBoundsException e) {
+            return defval;
+        }
     }
 
     public ListaSequencial<K> chaves() {
         ListaSequencial<K> lk = new ListaSequencial<>();
-
+        for (Par par : tab) {
+            if (par != null) {
+                lk.adiciona(par.chave);
+            }
+        }
         return lk;
     }
 
     public ListaSequencial<V> valores() {
         ListaSequencial<V> lv = new ListaSequencial<>();
-
+        for (Par par : tab) {
+            if (par != null) {
+                lv.adiciona(par.valor);
+            }
+        }
         return lv;
     }
 
     public ListaSequencial<Par> items() {
         ListaSequencial<Par> lp = new ListaSequencial<>();
-
+        for (Par par : tab) {
+            if (par != null) {
+                lp.adiciona(par);
+            }
+        }
         return lp;
     }
 
