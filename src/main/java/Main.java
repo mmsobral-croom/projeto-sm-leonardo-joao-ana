@@ -33,7 +33,6 @@ public class Main {
                 for (Produto p: carrinho) {
                     IO.println(p.getNome());
                 }
-
                 continue;
             }
 
@@ -41,7 +40,6 @@ public class Main {
                 float precoBistek = 0;
                 float precoGiassi = 0;
                 float precoFort = 0;
-
 
                 for(int i = 0; i < carrinho.comprimento(); i++){
                     precoGiassi += carrinho.obtem(i).getPreco();
