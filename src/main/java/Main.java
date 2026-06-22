@@ -18,13 +18,15 @@ public class Main {
 
         ListaSequencial<Produto> carrinho = new ListaSequencial<>(); //esse é do giassi
 
-
-
         String produtoNome = "";
 
 //        TabHash<String,Produto> tabHashProdutosIntersecaoGiassi = new TabHash<>();
 //        TabHash<String,Produto> tabHashProdutosIntersecaoFort = new TabHash<>();
 //        TabHash<String,Produto> tabHashProdutosIntersecaoBistek = new TabHash<>();
+
+        TabHash<String, Produto> mapProdutosBistek = new TabHash<>();
+        TabHash<String, Produto> mapProdutosFort = new TabHash<>();
+        TabHash<String, Produto> mapProdutos = new TabHash<>(); //esse é do giassi
 
 
         //nome pesquisado, supermercado, lista produto
@@ -35,13 +37,6 @@ public class Main {
             ListaSequencial<Produto> produtosIntersecaoGiassi = new ListaSequencial<>(); //esse é do giassi
             ListaSequencial<Produto> produtosIntersecaoBistek = new ListaSequencial<>(); //esse é do bistek
             ListaSequencial<Produto> produtosIntersecaoFort = new ListaSequencial<>(); //esse é do fort
-
-
-
-
-            TabHash<String, Produto> mapProdutosBistek = new TabHash<>();
-            TabHash<String, Produto> mapProdutosFort = new TabHash<>();
-            TabHash<String, Produto> mapProdutos = new TabHash<>(); //esse é do giassi
 
             produtoNome = IO.readln("Digite o nome do produto que você quer buscar, 'listar' para listar os produtos no carrinho, 'preco' para calcular o total ou 'sair' para sair : ");
 
@@ -77,6 +72,9 @@ public class Main {
                 ListaSequencial<Produto> produtosIntersecaoGiassiCache = produtosIntersecaoHash.obtem("Giassi");
                 ListaSequencial<Produto> produtosIntersecaoBistekCache = produtosIntersecaoHash.obtem("Bistek");
                 ListaSequencial<Produto> produtosIntersecaoFortCache = produtosIntersecaoHash.obtem("Fort");
+//                produtosIntersecaoGiassi = produtosIntersecaoGiassiCache;
+//                produtosIntersecaoBistek =  produtosIntersecaoBistekCache;
+//                produtosIntersecaoFort = produtosIntersecaoFortCache;
 
                 int id = 1;
 
@@ -144,9 +142,9 @@ public class Main {
             int idProdutoSelecionado = Integer.parseInt(IO.readln("Digite o id do produto a adicionar no carrinho: "));
             carrinho.adiciona(produtosIntersecaoGiassi.obtem(idProdutoSelecionado - 1));
 
-            produtosIntersecaoGiassi.limpa();
-            produtosIntersecaoBistek.limpa();
-            produtosIntersecaoFort.limpa();
+//            produtosIntersecaoGiassi.limpa();
+//            produtosIntersecaoBistek.limpa();
+//            produtosIntersecaoFort.limpa();
         }
     }
 }
