@@ -16,16 +16,9 @@ public class Main {
         Bistek bistek = new Bistek();
         Fort fort = new Fort();
 
-        ListaSequencial<Produto> produtosIntersecaoGiassi = new ListaSequencial<>(); //esse é do giassi
-        ListaSequencial<Produto> produtosIntersecaoBistek = new ListaSequencial<>(); //esse é do bistek
-        ListaSequencial<Produto> produtosIntersecaoFort = new ListaSequencial<>(); //esse é do fort
-
-
         ListaSequencial<Produto> carrinho = new ListaSequencial<>(); //esse é do giassi
 
-        TabHash<String, Produto> mapProdutosBistek = new TabHash<>();
-        TabHash<String, Produto> mapProdutosFort = new TabHash<>();
-        TabHash<String, Produto> mapProdutos = new TabHash<>(); //esse é do giassi
+
 
         String produtoNome = "";
 
@@ -38,6 +31,18 @@ public class Main {
         TabHash<String, TabHash<String, ListaSequencial<Produto>>> cache = new TabHash<>();
 
         while (!Objects.equals(produtoNome, "sair")) {
+
+            ListaSequencial<Produto> produtosIntersecaoGiassi = new ListaSequencial<>(); //esse é do giassi
+            ListaSequencial<Produto> produtosIntersecaoBistek = new ListaSequencial<>(); //esse é do bistek
+            ListaSequencial<Produto> produtosIntersecaoFort = new ListaSequencial<>(); //esse é do fort
+
+
+
+
+            TabHash<String, Produto> mapProdutosBistek = new TabHash<>();
+            TabHash<String, Produto> mapProdutosFort = new TabHash<>();
+            TabHash<String, Produto> mapProdutos = new TabHash<>(); //esse é do giassi
+
             produtoNome = IO.readln("Digite o nome do produto que você quer buscar, 'listar' para listar os produtos no carrinho, 'preco' para calcular o total ou 'sair' para sair : ");
 
             if (Objects.equals(produtoNome, "listar")) {
@@ -140,6 +145,8 @@ public class Main {
             carrinho.adiciona(produtosIntersecaoGiassi.obtem(idProdutoSelecionado - 1));
 
             produtosIntersecaoGiassi.limpa();
+            produtosIntersecaoBistek.limpa();
+            produtosIntersecaoFort.limpa();
         }
     }
 }
