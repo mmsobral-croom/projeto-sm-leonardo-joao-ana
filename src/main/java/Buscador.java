@@ -47,19 +47,33 @@ public class Buscador {
         Supermercado.Resultado buscaFort = fort.busca(produtoNome);
 
         ListaSequencial<String> eansGiassi = new ListaSequencial<>();
-        for (Produto p : buscaGiassi) {
-            eansGiassi.adiciona(p.getEan());
-            mapGiassi.adiciona(p.getEan(), p);
+        if (buscaGiassi != null) {
+            for (Produto p : buscaGiassi) {
+                if (p.isDisponivel()) {
+                    eansGiassi.adiciona(p.getEan());
+                    mapGiassi.adiciona(p.getEan(), p);
+                }
+            }
         }
+
         ListaSequencial<String> eansBistek = new ListaSequencial<>();
-        for (Produto p : buscaBistek) {
-            eansBistek.adiciona(p.getEan());
-            mapBistek.adiciona(p.getEan(), p);
+        if (buscaBistek != null) {
+            for (Produto p : buscaBistek) {
+                if (p.isDisponivel()) {
+                    eansBistek.adiciona(p.getEan());
+                    mapBistek.adiciona(p.getEan(), p);
+                }
+            }
         }
+
         ListaSequencial<String> eansFort = new ListaSequencial<>();
-        for (Produto p : buscaFort) {
-            eansFort.adiciona(p.getEan());
-            mapFort.adiciona(p.getEan(), p);
+        if (buscaFort != null) {
+            for (Produto p : buscaFort) {
+                if (p.isDisponivel()) {
+                    eansFort.adiciona(p.getEan());
+                    mapFort.adiciona(p.getEan(), p);
+                }
+            }
         }
 
         ListaSequencial<String> produtosEan = eansGiassi.interseccao(eansBistek.interseccao(eansFort));

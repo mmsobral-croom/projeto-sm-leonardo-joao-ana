@@ -16,7 +16,7 @@ public class InterfaceUsuario {
     }
 
     public static String pedirProduto() {
-        return IO.readln("Digite o nome do produto que você quer buscar, 'listar' para listar os produtos no carrinho, 'preco' para calcular o total ou 'sair' para sair : ").trim().toLowerCase();
+        return IO.readln("Digite o nome do produto que você quer buscar, 'listar' para listar os produtos no carrinho, 'preco' para calcular o total ou 'sair' para sair: ").trim().toLowerCase();
     }
 
     public static int pedirIdParaCarrinho() {

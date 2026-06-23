@@ -5,7 +5,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 @Builder
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+
 public class Produto {
         String nome;
         String id;
