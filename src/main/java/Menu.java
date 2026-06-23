@@ -39,9 +39,10 @@ public class Menu {
         ListaSequencial<Produto> resultados = buscador.buscar(produtoNome);
         InterfaceUsuario.exibirResultados(resultados);
 
-        if (!resultados.esta_vazia()) {
-            InterfaceUsuario.pedirIdParaCarrinho();
-            // Mantendo a lógica original: o ID é lido mas não é usado para adicionar ao carrinho no código original da Main.
+        int idSelecionado = InterfaceUsuario.pedirIdParaCarrinho();
+        if (idSelecionado > 0 && idSelecionado <= resultados.comprimento()) {
+            Produto selecionado = resultados.obtem(idSelecionado - 1);
+            carrinho.adicionar(selecionado);
         }
     }
 }
