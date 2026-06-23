@@ -72,12 +72,18 @@ public class Main {
                 ListaSequencial<Produto> produtosIntersecaoGiassiCache = produtosIntersecaoHash.obtem("Giassi");
                 ListaSequencial<Produto> produtosIntersecaoBistekCache = produtosIntersecaoHash.obtem("Bistek");
                 ListaSequencial<Produto> produtosIntersecaoFortCache = produtosIntersecaoHash.obtem("Fort");
-//                produtosIntersecaoGiassi = produtosIntersecaoGiassiCache;
-//                produtosIntersecaoBistek =  produtosIntersecaoBistekCache;
-//                produtosIntersecaoFort = produtosIntersecaoFortCache;
+
+                for (int i = 0; i < produtosIntersecaoGiassiCache.comprimento(); i++) {
+                    Produto pG = produtosIntersecaoGiassiCache.obtem(i);
+                    Produto pB = produtosIntersecaoBistekCache.obtem(i);
+                    Produto pF = produtosIntersecaoFortCache.obtem(i);
+
+                    mapProdutos.adiciona(pG.getEan(), pG);
+                    mapProdutosBistek.adiciona(pB.getEan(), pB);
+                    mapProdutosFort.adiciona(pF.getEan(), pF);
+                }
 
                 int id = 1;
-
                 for (Produto p : produtosIntersecaoGiassiCache) {
                     IO.println(id + " - " + p.getId() +" - " + p.getNome()) ;
                     id++;
