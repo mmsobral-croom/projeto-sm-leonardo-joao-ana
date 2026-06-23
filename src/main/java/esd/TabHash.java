@@ -134,7 +134,7 @@ public class TabHash <K, V> {
 
         for(int i = 0; i < pares.comprimento(); i++){
             Par p = pares.obtem(i);
-            if (p.valor != null && p.chave == chave) {
+            if (p.valor != null && chave.equals(p.chave)) {
                 pares.remove(i);
                 len--;
                 return;
@@ -147,7 +147,7 @@ public class TabHash <K, V> {
         int linha = Math.abs(chave.hashCode()) % tab.length;
         ListaSequencial<Par> pares = tab[linha];
         for(Par p: pares){
-            if (p.valor != null && p.chave == chave) {
+            if (p.valor != null && chave.equals(p.chave)) {
                 return true;
             }
         }
@@ -163,7 +163,7 @@ public class TabHash <K, V> {
 
         ListaSequencial<Par> pares = tab[linha];
         for(Par p: pares){
-            if (p.valor != null && p.chave == chave) {
+            if (p.valor != null && chave.equals(p.chave)) {
                 return p.valor;
             }
         }

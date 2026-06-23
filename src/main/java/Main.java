@@ -38,7 +38,7 @@ public class Main {
             ListaSequencial<Produto> produtosIntersecaoBistek = new ListaSequencial<>(); //esse é do bistek
             ListaSequencial<Produto> produtosIntersecaoFort = new ListaSequencial<>(); //esse é do fort
 
-            produtoNome = IO.readln("Digite o nome do produto que você quer buscar, 'listar' para listar os produtos no carrinho, 'preco' para calcular o total ou 'sair' para sair : ");
+            produtoNome = IO.readln("Digite o nome do produto que você quer buscar, 'listar' para listar os produtos no carrinho, 'preco' para calcular o total ou 'sair' para sair : ").trim().toLowerCase();;
 
             if (Objects.equals(produtoNome, "listar")) {
                 for (Produto p: carrinho) {
@@ -89,7 +89,7 @@ public class Main {
                     id++;
                 }
 
-                int idProdutoSelecionado = Integer.parseInt(IO.readln("Digite o id do produto a adicionar no carrinho: "));
+                int idProdutoSelecionado = Integer.parseInt(IO.readln("Digite o id do produto a adicionar no carrinho aaa: "));
                 carrinho.adiciona(produtosIntersecaoGiassiCache.obtem(idProdutoSelecionado - 1));
 
                 continue;
