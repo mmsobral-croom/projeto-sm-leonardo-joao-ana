@@ -28,6 +28,7 @@ public class Menu {
             }
 
             if (Objects.equals(produtoNome, "sair")) {
+                buscador.salvarCache();
                 break;
             }
 

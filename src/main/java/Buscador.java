@@ -2,6 +2,10 @@ import esd.ListaSequencial;
 import esd.TabHash;
 import sm.*;
 
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 public class Buscador {
     private Giassi giassi;
     private Bistek bistek;
@@ -19,6 +23,10 @@ public class Buscador {
         this.mapGiassi = new TabHash<>();
         this.mapBistek = new TabHash<>();
         this.mapFort = new TabHash<>();
+
+        carregarCache(mapGiassi, "cache-giassi.txt");
+        carregarCache(mapFort, "cache-fort.txt");
+        carregarCache(mapBistek, "cache-bistek.txt");
     }
 
     public ListaSequencial<Produto> buscar(String produtoNome) {
@@ -105,5 +113,59 @@ public class Buscador {
 
     public TabHash<String, Produto> getMapFort() {
         return mapFort;
+    }
+
+    private void salvarCache(TabHash<String, Produto> cache, String arquivo) {
+        StringBuilder conteudo = new StringBuilder();
+
+        for (Produto p : cache.valores()) {
+            conteudo.append(p.getNome()).append(";")
+                    .append(p.getId()).append(";")
+                    .append(p.getMarca()).append(";")
+                    .append(p.getPreco()).append(";")
+                    .append(p.getEan()).append(";")
+                    .append(p.isDisponivel())
+                    .append(System.lineSeparator());
+        }
+
+        try {
+            Files.writeString(Path.of(arquivo), conteudo.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void salvarCache() {
+        salvarCache(mapGiassi, "cache-giassi.txt");
+        salvarCache(mapFort, "cache-fort.txt");
+        salvarCache(mapBistek, "cache-bistek.txt");
+    }
+
+    private void carregarCache(TabHash<String, Produto> cache, String arquivo) {
+        try {
+            String conteudo = Files.readString(Path.of(arquivo));
+
+            if (conteudo.isBlank()) return;
+
+            String[] linhas = conteudo.split("\\R");
+
+            for (String linha : linhas) {
+                String[] dados = linha.split(";");
+
+                Produto p = new Produto(
+                        dados[0],
+                        dados[1],
+                        dados[2],
+                        Float.parseFloat(dados[3]),
+                        dados[4],
+                        Boolean.parseBoolean(dados[5])
+                );
+
+                cache.adiciona(p.getEan(), p);
+            }
+
+        } catch (IOException e) {
+            // Arquivo ainda não existe: cache começa vazia.
+        }
     }
 }
