@@ -27,6 +27,8 @@ public class Buscador {
         carregarCache(mapGiassi, "cache-giassi.txt");
         carregarCache(mapFort, "cache-fort.txt");
         carregarCache(mapBistek, "cache-bistek.txt");
+
+        carregarBuscas();
     }
 
     public ListaSequencial<Produto> buscar(String produtoNome) {
@@ -139,6 +141,8 @@ public class Buscador {
         salvarCache(mapGiassi, "cache-giassi.txt");
         salvarCache(mapFort, "cache-fort.txt");
         salvarCache(mapBistek, "cache-bistek.txt");
+
+        salvarBuscas();
     }
 
     private void carregarCache(TabHash<String, Produto> cache, String arquivo) {
@@ -167,5 +171,80 @@ public class Buscador {
         } catch (IOException e) {
             // Arquivo ainda não existe: cache começa vazia.
         }
+    }
+
+    private void salvarBuscas() {
+        StringBuilder sb = new StringBuilder();
+
+        for (var item : cache.items()) {
+            String nome = item.obtemChave();
+            TabHash<String, ListaSequencial<Produto>> listas = item.obtemValor();
+
+            sb.append(nome).append(";");
+
+            escreverLista(sb, listas.obtem("Giassi"));
+            sb.append(";");
+
+            escreverLista(sb, listas.obtem("Bistek"));
+            sb.append(";");
+
+            escreverLista(sb, listas.obtem("Fort"));
+            sb.append(System.lineSeparator());
+        }
+
+        try {
+            Files.writeString(Path.of("cache-buscas.txt"), sb.toString());
+        } catch (IOException e) {
+            IO.println("Falha ao salvar cache");
+        }
+    }
+
+    private void escreverLista(StringBuilder sb, ListaSequencial<Produto> lista) {
+        boolean primeiro = true;
+
+        for (Produto p : lista) {
+            if (!primeiro) sb.append(",");
+
+            sb.append(p.getEan());
+
+            primeiro = false;
+        }
+    }
+
+    private void carregarBuscas() {
+        try {
+            String texto = Files.readString(Path.of("cache-buscas.txt"));
+
+            for (String linha : texto.split("\\R")) {
+                String[] partes = linha.split(";");
+
+                String nome = partes[0];
+
+                TabHash<String, ListaSequencial<Produto>> listas = new TabHash<>();
+
+                listas.adiciona("Giassi", reconstruirLista(partes[1], mapGiassi));
+                listas.adiciona("Bistek", reconstruirLista(partes[2], mapBistek));
+                listas.adiciona("Fort", reconstruirLista(partes[3], mapFort));
+
+                cache.adiciona(nome, listas);
+            }
+        } catch (IOException e) {
+            // Arquivo ainda não existe: cache começa vazia.
+        }
+    }
+
+    private ListaSequencial<Produto> reconstruirLista(String texto, TabHash<String, Produto> mapa) {
+        ListaSequencial<Produto> lista = new ListaSequencial<>();
+
+        if (texto.isBlank()) return lista;
+
+        for (String ean : texto.split(",")) {
+
+            Produto p = mapa.obtem(ean);
+
+            if (p != null) lista.adiciona(p);
+        }
+
+        return lista;
     }
 }
